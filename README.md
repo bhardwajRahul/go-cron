@@ -28,7 +28,7 @@ Uses Go's standard library heap, focuses on core functionality, min-heap based t
 
 ```mermaid
 flowchart TD
-  A[Initialize] --> B[Setup Logger]
+  A[Initialize] --> B[Setup Logging System]
   B --> C[Initialize Task Heap]
   C --> D{Already Running?}
   D -->|Yes| D1[No Action]
@@ -43,20 +43,18 @@ flowchart TD
   G -->|Has Tasks<br>Set Timer to Next Task| Q
   
   Q --> R{Event Type}
-  R -->|Timer Expires| R1[Execute Due Tasks]
+  R -->|Timer Expired| R1[Execute Due Tasks]
   R -->|Add Task| R2[Add to Heap]
   R -->|Remove Task| R3[Remove from Heap]
   R -->|Stop Signal| R4[Cleanup and Exit]
   
   R1 --> S[Pop Task from Heap]
+  S --> R5[Calculate Next Execution Time]
+  R5 --> G
   S --> T{Check if Enabled}
   T -->|Disabled| T0[Skip Task]
   T0 --> G
-  T -->|Enabled| T1{Execute Task Function}
-  T1 --> T11[Calculate Next Execution Time]
-  T1 -->|Panic/Timeout| T10[Recover]
-  T10 --> T11[Calculate Next Execution Time]
-  T11 --> U[Re-add to Heap if Recurring]
+  T -->|Enabled| T1[Execute Task Function]
   
   R2 --> V[Parse Schedule]
   V --> W[Create Task Object]
@@ -66,7 +64,6 @@ flowchart TD
   Y --> Z[Mark as Disabled]
   Z --> AA[Remove from Heap]
   
-  U --> G
   X --> G
   AA --> G
   
