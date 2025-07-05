@@ -54,7 +54,7 @@ flowchart TD
   T0 --> G
   T -->|Enabled| T1{Execute Task Function}
   T1 --> T11[Calculate Next Execution Time]
-  T1 -->|Panic| T10[Recover]
+  T1 -->|Panic/Timeout| T10[Recover]
   T10 --> T11[Calculate Next Execution Time]
   T11 --> U[Re-add to Heap if Recurring]
   
