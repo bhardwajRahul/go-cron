@@ -2,6 +2,7 @@
 
 > 極致輕量的 Golang 排程器，支援標準 cron 表達式、自定義描述符和自訂間隔。輕鬆使用 Go 撰寫排程。<br>
 > A lightweight Golang scheduler supporting standard cron expressions, custom descriptors, and custom intervals. Easy to use for writing scheduling with Golang.<br>
+>
 > 原本是設計給 [pardnchiu/go-ip-sentry](https://github.com/pardnchiu/go-ip-sentry) 威脅分數衰退計算所使用到的排程功能。<br>
 > Originally designed for the scheduling used in threat score decay calculations for [pardnchiu/go-ip-sentry](https://github.com/pardnchiu/go-ip-sentry).
 
@@ -11,7 +12,7 @@
 
 ## 三大核心特色 / Three Core Features
 
-### 低學期成本 / Low Learning Cost
+### 零學期成本 / Zero Learning curve
 零學習成本，只要會寫 cron 表達式就基本會使用<br>
 Zero learning curve, if you know how to write cron expressions, you know how to use it
 
@@ -78,8 +79,9 @@ flowchart TD
 
 ## 依賴套件 / Dependencies
 
-- [`github.com/pardnchiu/go-logger`](https://github.com/pardnchiu/go-logger): 如果你不需要，你可以 fork 然後使用你熟悉的取代。更可以到[這裡](https://forms.gle/EvNLwzpHfxWR2gmP6)進行投票讓我知道。<br>
-  If you don't need this dependency, you can fork the project and replace it. You can also vote [here](https://forms.gle/EvNLwzpHfxWR2gmP6) to let me know your thought.
+- [`github.com/pardnchiu/go-logger`](https://github.com/pardnchiu/go-logger)<br>
+  如果你不需要，你可以 fork 然後使用你熟悉的取代。更可以到[這裡](https://forms.gle/EvNLwzpHfxWR2gmP6)進行投票讓我知道。<br>
+  If you don't need this, you can fork the project and replace it. You can also vote [here](https://forms.gle/EvNLwzpHfxWR2gmP6) to let me know your thought.
 
 ## 使用方法 / How to use
 
@@ -211,24 +213,21 @@ scheduler.Add("@every 12h", task)
 
 ### 排程管理 / Scheduler Management
 
-- **New** - 建立新的排程實例<br>
-  Create new scheduler instance
+- **New** - 建立新的排程實例 / Create scheduler instance
   ```go
   scheduler, err := cron.New(config)
   ```
   - 設置任務堆和通訊通道<br>
     Sets up task heap and communication channels
 
-- **Start** - 啟動排程實例<br>
-  Start scheduler instance
+- **Start** - 啟動排程實例 / Start scheduler instance
   ```go
   scheduler.Start()
   ```
   - 啟動排程迴圈<br>
     Starts scheduling loop
 
-- **Stop** - 停止排程器<br>
-  Stop scheduler
+- **Stop** - 停止排程器 / Stop scheduler
   ```go
   ctx := scheduler.Stop()
   <-ctx.Done() // Wait for all tasks to complete
@@ -242,8 +241,7 @@ scheduler.Add("@every 12h", task)
 
 ### 任務管理 / Task Management
 
-- **Add** - 新增排程任務<br>
-  Add scheduled task
+- **Add** - 新增排程任務 / Add task
   ```go
   // Basic usage
   taskID, err := scheduler.Add("0 */2 * * *", func() {
@@ -282,8 +280,7 @@ scheduler.Add("@every 12h", task)
     - `func()`：超時觸發的回調函式<br>
       `func()`: Callback function triggered on timeout
 
-- **Remove** - 取消任務排程<br>
-  Cancel task schedule
+- **Remove** - 取消任務排程 / Cancel task
   ```go
   scheduler.Remove(taskID)
   ```
@@ -292,8 +289,7 @@ scheduler.Add("@every 12h", task)
   - 無論排程器狀態如何都可安全呼叫<br>
     Safe to call regardless of scheduler state
 
-- **RemoveAll** -  移除所有任務<br>
-  Remove all tasks
+- **RemoveAll** -  移除所有任務 / Remove all tasks
   ```go
   scheduler.RemoveAll()
   ```
