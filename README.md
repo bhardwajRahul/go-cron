@@ -1,30 +1,32 @@
-> [!Note]
-> This content is translated by LLM. Original text can be found [here](README.zh.md)
+# Cron Scheduler (Golang)
 
-# Cron Job Scheduler (Golang)
-
-> Ultra-lightweight Golang scheduler supporting standard cron expressions, custom descriptors, and custom intervals. A minimalist scheduler for Go that makes scheduling effortless.<br>
-> Originally designed for the scheduling functionality used in threat score decay calculations for [pardnchiu/go-ip-sentry](https://github.com/pardnchiu/go-ip-sentry).
+> 極致輕量的 Golang 排程器，支援標準 cron 表達式、自定義描述符和自訂間隔。輕鬆使用 Go 撰寫排程。<br>
+> A lightweight Golang scheduler supporting standard cron expressions, custom descriptors, and custom intervals. Easy to use for writing scheduling with Golang.<br>
+> 原本是設計給 [pardnchiu/go-ip-sentry](https://github.com/pardnchiu/go-ip-sentry) 威脅分數衰退計算所使用到的排程功能。<br>
+> Originally designed for the scheduling used in threat score decay calculations for [pardnchiu/go-ip-sentry](https://github.com/pardnchiu/go-ip-sentry).
 
 [![license](https://img.shields.io/github/license/pardnchiu/go-cron)](LICENSE)
 [![version](https://img.shields.io/github/v/tag/pardnchiu/go-cron)](https://github.com/pardnchiu/go-cron/releases)
-[![readme](https://img.shields.io/badge/readme-繁體中文-blue)](README.zh.md) 
+[![readme](https://img.shields.io/badge/readme-English-blue)](README.md) 
 
-## Three Core Features
+## 三大核心特色 / Three Core Features
 
-### Ultra-low Learning Cost
-Zero learning curve - if you know how to write cron expressions, you basically know how to use it
+### 低學期成本 / Low Learning Cost
+零學習成本，只要會寫 cron 表達式就基本會使用<br>
+Zero learning curve, if you know how to write cron expressions, you know how to use it
 
-### Flexible Syntax
+### 靈活語法 / Flexible Syntax
+支援標準 cron 表達式、自定義描述符（`@hourly`、`@daily`、`@weekly` 等）和自訂間隔（`@every`）語法<br>
 Supports standard cron expressions, custom descriptors (`@hourly`, `@daily`, `@weekly`, etc.) and custom interval (`@every`) syntax
 
-### Efficient Architecture
-Uses Go's standard library heap, focuses on core functionality, min-heap based task scheduling algorithm, concurrent task execution and management, with panic recovery mechanism and dynamic task add/remove capabilities, ensuring optimal performance in high-volume task scenarios
+### 高效架構 / Efficient Architecture
+使用 Golang 標準庫的 `heap`，專注核心功能，基於最小堆的任務排程，併發的任務執行和管理，具有 panic 恢復機制和動態任務新增/移除功能，並確保在大量任務場景中的最佳效能<br>
+Uses Golang standard library `heap`, focuses on core feature, min-heap based task scheduling, concurrent task execution and management, with panic recovery mechanism and dynamic task add/remove, ensuring performance under heavy task
 
-## Flow Chart
+## 流程圖 / Flow
 
 <details>
-<summary>Click to view</summary>
+<summary>點擊查看</summary>
 
 ```mermaid
 flowchart TD
@@ -74,18 +76,19 @@ flowchart TD
 
 </details>
 
-## Dependencies
+## 依賴套件 / Dependencies
 
-- [`github.com/pardnchiu/go-logger`](https://github.com/pardnchiu/go-logger): If you don't need this dependency, you can fork the project and replace it with your preferred logging solution. You can also vote [here](https://forms.gle/EvNLwzpHfxWR2gmP6) to let me know your preference.
+- [`github.com/pardnchiu/go-logger`](https://github.com/pardnchiu/go-logger): 如果你不需要，你可以 fork 然後使用你熟悉的取代。更可以到[這裡](https://forms.gle/EvNLwzpHfxWR2gmP6)進行投票讓我知道。<br>
+  If you don't need this dependency, you can fork the project and replace it. You can also vote [here](https://forms.gle/EvNLwzpHfxWR2gmP6) to let me know your thought.
 
-## Usage
+## 使用方法 / How to use
 
-### Installation
+### 安裝 / Installation
 ```bash
 go get github.com/pardnchiu/go-cron
 ```
 
-### Initialization
+### 初始化 / Initialization
 ```go
 package main
 
@@ -135,8 +138,7 @@ func main() {
 }
 ```
 
-## Configuration
-
+## 配置介紹 / Configuration
 ```go
 type Config struct {
   Log      *Log           // Logger configuration
@@ -152,10 +154,11 @@ type Log struct {
 }
 ```
 
-## Supported Formats
+## 支援格式 / Supported
 
-### Standard Cron
-5-field format: `minute hour day month weekday`
+### 標準 / Standard
+> 5 欄位格式：`分鐘 小時 日 月 星期`<br>
+> 5-field format: `minute hour day month weekday`
 
 ```go
 // Every minute
@@ -174,8 +177,7 @@ scheduler.Add("*/15 * * * *", task)
 scheduler.Add("0 6 1 * *", task)
 ```
 
-### Custom Descriptors
-
+### 自定義 / Custom
 ```go
 // January 1st at midnight
 scheduler.Add("@yearly", task)
@@ -205,34 +207,43 @@ scheduler.Add("@every 2h", task)
 scheduler.Add("@every 12h", task)
 ```
 
-## Available Functions
+## 可用函式 / Functions
 
-### Scheduler Management
+### 排程管理 / Scheduler Management
 
-- **New** - Create new scheduler instance
+- **New** - 建立新的排程實例<br>
+  Create new scheduler instance
   ```go
   scheduler, err := cron.New(config)
   ```
-  - Sets up task heap and communication channels
+  - 設置任務堆和通訊通道<br>
+    Sets up task heap and communication channels
 
-- **Start** - Start scheduler instance
+- **Start** - 啟動排程實例<br>
+  Start scheduler instance
   ```go
   scheduler.Start()
   ```
-  - Starts scheduling loop
+  - 啟動排程迴圈<br>
+    Starts scheduling loop
 
-- **Stop** - Gracefully stop scheduler
+- **Stop** - 停止排程器<br>
+  Stop scheduler
   ```go
   ctx := scheduler.Stop()
   <-ctx.Done() // Wait for all tasks to complete
   ```
-  - Sends stop signal to main loop
-  - Returns context that completes when all running tasks finish
-  - Ensures graceful shutdown without interrupting tasks
+  - 向主迴圈發送停止信號<br>
+    Sends stop signal to main loop
+  - 回傳在所有執行中任務完成時完成的 context<br>
+    Returns context that completes when all running tasks finish
+  - 確保不中斷任務的關閉<br>
+    Ensures graceful shutdown without interrupting tasks
 
-### Task Management
+### 任務管理 / Task Management
 
-- **Add** - Add scheduled task
+- **Add** - 新增排程任務<br>
+  Add scheduled task
   ```go
   // Basic usage
   taskID, err := scheduler.Add("0 */2 * * *", func() {
@@ -258,55 +269,81 @@ scheduler.Add("@every 12h", task)
     log.Println("Backup task timed out, please check system status")
   })
   ```
-  - Parses schedule syntax
-  - Generates unique task ID for management
-  - Supports variadic parameter configuration:
-    - `string`: Task description
-    - `time.Duration`: Task execution timeout
-    - `func()`: Callback function triggered on timeout
+  - 解析排程語法<br>
+    Parses schedule syntax
+  - 產生唯一的任務 ID 以便管理<br>
+    Generates unique task ID for management
+  - 支援可變參數配置<br>
+    Supports variadic parameter configuration
+    - `string`：任務描述<br>
+      `string`: Task description
+    - `time.Duration`：任務執行超時時間<br>
+      `time.Duration`: Task execution timeout
+    - `func()`：超時觸發的回調函式<br>
+      `func()`: Callback function triggered on timeout
 
-- **Remove** - Cancel task schedule
+- **Remove** - 取消任務排程<br>
+  Cancel task schedule
   ```go
   scheduler.Remove(taskID)
   ```
-  - Removes task from scheduling queue
-  - Safe to call regardless of scheduler state
+  - 從排程佇列中移除任務<br>
+    Removes task from scheduling queue
+  - 無論排程器狀態如何都可安全呼叫<br>
+    Safe to call regardless of scheduler state
 
-- **RemoveAll** - Remove all tasks
+- **RemoveAll** -  移除所有任務<br>
+  Remove all tasks
   ```go
   scheduler.RemoveAll()
   ```
-  - Immediately removes all scheduled tasks
-  - Does not affect currently running tasks
+  - 立即移除所有排程任務<br>
+    Immediately removes all scheduled tasks
+  - 不影響正在執行的任務<br>
+    Does not affect currently running tasks
 
-- **List** - Get task list
+- **List** - 獲取任務列表<br>
+  Get task list
   ```go
   tasks := scheduler.List()
   ```
 
-## Timeout Mechanism
-When execution time exceeds the configured `Delay`:
-- Interrupts task execution
-- Triggers `OnDelay` function (if configured)
-- Logs timeout event
-- Continues with next scheduled task
+## 超時機制 / Timeout
+當執行時間超過設定的 `Delay`<br>
+When execution time exceeds the configured `Delay`
+- 中斷任務執行<br>
+  Interrupts task execution
+- 觸發 `OnDelay` 函式（如果有設定）<br>
+  Triggers `OnDelay` function (if configured)
+- 記錄超時日誌<br>
+  Logs timeout event
+- 繼續執行下一個排程<br>
+  Continues with next scheduled task
 
-### Features
-- Timeout implemented using `context.WithTimeout`
-- Timeout does not affect execution of other tasks
-- If action completes before timeout, timeout is not triggered
+### 特點 / Features
+- 超時使用 `context.WithTimeout` 實現<br>
+  Timeout implemented using `context.WithTimeout`
+- 超時不會影響其他任務的執行<br>
+  Timeout does not affect execution of other tasks
+- 如果動作在超時前完成，不會觸發超時<br>
+  If action completes before timeout, timeout is not triggered
 
-## Upcoming Features
-- Task dependency management similar to [php-async](https://github.com/pardnchiu/php-async)
-  - Pre-dependencies: Task B executes after Task A completes
-  - Post-dependencies: Task B executes before Task A starts
-  - Multiple dependencies: Task C waits for both Tasks A and B to complete before executing
+## 功能預告 / Upcoming
+- 導入如 [php-async](https://github.com/pardnchiu/php-async) 中的任務依賴關係管理
+  Task dependency management similar to [php-async](https://github.com/pardnchiu/php-async)
+  - 前置依賴：任務 B 在任務 A 完成後執行<br>
+    Pre-dependencies: Task B executes after Task A completes
+  - 後置依賴：任務 B 在任務 A 開始前執行<br>
+    Post-dependencies: Task B executes before Task A starts
+  - 多重依賴：任務 C 等待任務 A、B 全部完成後執行<br>
+    Multiple dependencies: Task C waits for both Tasks A and B to complete before executing
 
-## License
+## 授權條款 / License
 
+此專案採用 [MIT](LICENSE) 授權條款。<br>
 This project is licensed under the [MIT](LICENSE) License.
 
-## Author
+## 作者 / Author
 
 <img src="https://avatars.githubusercontent.com/u/25631760" align="left" width="96" height="96" style="margin-right: 0.5rem;">
 
