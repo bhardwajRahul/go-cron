@@ -8,7 +8,6 @@
 
 [![license](https://img.shields.io/github/license/pardnchiu/go-cron)](LICENSE)
 [![version](https://img.shields.io/github/v/tag/pardnchiu/go-cron)](https://github.com/pardnchiu/go-cron/releases)
-[![readme](https://img.shields.io/badge/readme-English-blue)](README.md) 
 
 ## 三大核心特色 / Three Core Features
 
